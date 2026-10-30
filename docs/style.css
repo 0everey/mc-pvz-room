@@ -22,3 +22,6 @@
 .mode-badge{font-size:10px;color:#a0d8c2;background:#1b3b37;border:1px solid #41645b;border-radius:4px;padding:3px 6px;white-space:nowrap}@media(max-width:600px){.mode-badge{font-size:9px;padding:2px 4px}}
 
 .audio-preview{display:grid;gap:7px;justify-items:center}.audio-toggle{font-size:11px;padding:5px 13px;color:#c0f2df;border-color:#598f83;background:#21483f}.audio-status{display:block;max-width:100%;min-height:15px;font-size:10px;line-height:1.4;color:#aec9bd;text-align:center;overflow-wrap:anywhere}.audio-preview[data-audio-state="error"] .audio-status{color:#f1bd95}@media(max-width:600px){.audio-preview{gap:5px;padding:8px}.audio-toggle{font-size:10px;padding:4px 10px}.audio-status{font-size:9px}}
+
+/* Keep the card selection control and the audio action in separate corners. */
+.card-preview .audio-toggle{justify-self:end}
