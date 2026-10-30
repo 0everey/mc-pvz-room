@@ -1,0 +1,33 @@
+GloomShroom.png
+size:2048,512
+filter:Linear,Linear
+GloomShroom_base.png
+bounds:1123,271,355,210
+GloomShroom_blink1.png
+bounds:731,2,300,105
+GloomShroom_blink2.png
+bounds:746,109,305,105
+GloomShroom_face1.png
+bounds:419,216,350,265
+GloomShroom_face2.png
+bounds:771,216,350,265
+GloomShroom_head.png
+bounds:2,141,415,340
+GloomShroom_shooter1.png
+bounds:1123,164,145,105
+GloomShroom_shooter5.png
+bounds:1867,376,160,105
+GloomShroom_stem1.png
+bounds:1270,179,125,90
+Locator
+bounds:2,17,10,10
+Tween 1
+bounds:2,29,410,110
+Tween 10
+bounds:414,12,315,95
+Tween 13
+bounds:1480,279,340,110
+Tween 4
+bounds:1480,391,385,90
+Tween 7
+bounds:419,109,325,105

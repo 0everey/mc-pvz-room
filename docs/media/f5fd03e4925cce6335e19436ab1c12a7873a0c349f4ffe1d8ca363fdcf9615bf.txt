@@ -1,0 +1,13 @@
+DoomShroom.png
+size:2048,512
+filter:Linear,Linear
+DoomShroom_body
+bounds:1577,8,240,220
+DoomShroom_head1
+bounds:1577,236,425,240
+DoomShroom_head2
+bounds:1079,191,490,285
+DoomShroom_head3
+bounds:8,136,530,340
+DoomShroom_sleepinghead
+bounds:546,181,525,295

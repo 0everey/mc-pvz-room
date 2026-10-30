@@ -1,0 +1,16 @@
+HypnoShroom.png
+size:512,512
+filter:Linear,Linear
+HypnoShroom_body
+bounds:294,239,180,210
+rotate:90
+HypnoShroom_eye1
+bounds:8,61,60,65
+HypnoShroom_eye2
+bounds:8,8,45,45
+HypnoShroom_head
+bounds:8,134,278,285
+HypnoShroom_sleepeye.png
+bounds:294,166,60,65
+locator
+bounds:76,116,10,10

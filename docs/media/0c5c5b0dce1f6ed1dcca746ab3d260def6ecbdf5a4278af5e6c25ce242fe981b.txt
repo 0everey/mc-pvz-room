@@ -1,0 +1,15 @@
+IceShroom.png
+size:1024,256
+filter:Linear,Linear
+IceShroom_base
+bounds:699,156,300,85
+IceShroom_blink1
+bounds:699,113,130,35
+IceShroom_blink2
+bounds:699,70,130,35
+IceShroom_body
+bounds:426,61,265,180
+IceShroom_head
+bounds:8,26,410,215
+Locator
+bounds:8,8,10,10

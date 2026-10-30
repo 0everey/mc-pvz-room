@@ -1,0 +1,46 @@
+Magnetshroom.png
+size:2048,512
+filter:Linear,Linear
+Locator
+bounds:1528,391,10,10
+Magnetshroom_symbol_dot
+bounds:1764,454,50,50
+Magnetshroom_symbol_eyeblink3
+bounds:116,8,35,50
+Magnetshroom_symbol_eyeblink4
+bounds:372,111,35,50
+Magnetshroom_symbol_head1
+bounds:8,169,340,335
+Magnetshroom_symbol_head2
+bounds:356,169,340,335
+Magnetshroom_symbol_head3
+bounds:704,169,340,335
+Magnetshroom_symbol_head4
+bounds:1052,169,340,335
+Magnetshroom_symbol_idle_electric1
+bounds:269,91,95,70
+Magnetshroom_symbol_idle_electric2
+bounds:1400,268,95,70
+Magnetshroom_symbol_idle_electric3
+bounds:1661,434,95,70
+Magnetshroom_symbol_shock1
+bounds:161,81,100,80
+Magnetshroom_symbol_shock2
+bounds:357,8,75,60
+rotate:90
+Magnetshroom_symbol_shock3
+bounds:1400,200,75,60
+Magnetshroom_symbol_stemcap
+bounds:269,8,80,75
+Magnetshroom_symbol_stemcap_overlay
+bounds:8,66,145,95
+Tween 1
+bounds:8,8,100,50
+Tween 11
+bounds:1400,346,120,55
+Tween 23
+bounds:161,8,95,65
+Tween 3
+bounds:1553,429,100,75
+Tween 5
+bounds:1400,409,145,95

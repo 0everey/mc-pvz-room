@@ -1,0 +1,10 @@
+LilyPad.png
+size:512,512
+filter:Linear,Linear
+LilyPad
+bounds:2,94,400,400
+LilyPad_blink1
+bounds:2,2,135,90
+LilyPad_blink2
+bounds:404,359,135,90
+rotate:90

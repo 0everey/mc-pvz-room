@@ -1,0 +1,11 @@
+Hammer.png
+size:512,256
+filter:Linear,Linear
+Locator
+bounds:2,2,10,10
+symbol_hammer_1
+bounds:2,14,195,235
+symbol_hammer_2
+bounds:199,169,210,80
+symbol_hammer_3
+bounds:199,117,30,50

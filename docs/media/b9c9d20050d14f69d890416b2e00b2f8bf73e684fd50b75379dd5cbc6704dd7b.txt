@@ -1,0 +1,15 @@
+Blover.png
+size:1024,512
+filter:Linear,Linear
+Blober_dirt_back
+bounds:486,105,50,25
+Blover_dirt_front
+bounds:8,8,60,20
+Blover_head
+bounds:486,291,170,145
+Blover_head2
+bounds:486,138,170,145
+Blover_stem1
+bounds:664,286,90,150
+Tween 1
+bounds:8,36,470,400

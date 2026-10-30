@@ -1,0 +1,30 @@
+PoolCleaner.png
+size:1024,512
+filter:Linear,Linear
+PoolCleaner_body1
+bounds:2,159,310,335
+PoolCleaner_body2
+bounds:496,364,210,130
+PoolCleaner_bubble
+bounds:314,162,115,145
+rotate:90
+PoolCleaner_funnel
+bounds:314,279,180,215
+PoolCleaner_funnel_overlay
+bounds:2,2,155,210
+rotate:90
+PoolCleaner_tube
+bounds:496,287,75,170
+rotate:90
+PoolCleaner_tubeend
+bounds:461,177,95,100
+PoolCleaner_whitewater1
+bounds:668,295,235,55
+PoolCleaner_whitewater2
+bounds:708,424,260,70
+PoolCleaner_whitewater3
+bounds:708,352,250,70
+Tween 1
+bounds:214,18,139,139
+Tween 4
+bounds:355,21,139,139

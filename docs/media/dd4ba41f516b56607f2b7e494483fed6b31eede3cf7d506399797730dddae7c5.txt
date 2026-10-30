@@ -1,0 +1,15 @@
+SunShroom.png
+size:512,256
+filter:Linear,Linear
+Locator
+bounds:231,78,10,10
+SunShroom_blink1
+bounds:8,8,55,45
+SunShroom_blink2
+bounds:374,161,55,45
+SunShroom_body
+bounds:231,96,135,110
+SunShroom_head
+bounds:8,61,215,145
+SunShroom_sleep
+bounds:71,8,55,45

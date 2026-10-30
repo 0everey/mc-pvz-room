@@ -1,0 +1,27 @@
+SeaShroom.png
+size:1024,256
+filter:Linear,Linear
+Locator
+bounds:614,140,10,10
+SeaShroom_blink1
+bounds:721,160,70,40
+SeaShroom_blink2
+bounds:804,208,70,40
+SeaShroom_body
+bounds:8,8,155,98
+SeaShroom_foam
+bounds:483,129,123,21
+SeaShroom_head
+bounds:8,114,197,134
+SeaShroom_lips
+bounds:171,46,30,60
+SeaShroom_tentacles
+bounds:483,158,230,90
+SeaShroom_tentacles_zengarden
+bounds:213,187,262,61
+SeaShroom_tentacles_zengarden_UL
+bounds:213,118,262,61
+SeahShroom_mouth
+bounds:799,165,25,35
+Tween 3
+bounds:721,208,75,40

@@ -1,0 +1,37 @@
+CobCannon.png
+size:2048,2048
+filter:Linear,Linear
+CobCannon_blink1.png
+bounds:761,1457,185,115
+rotate:90
+CobCannon_blink2.png
+bounds:761,1264,185,115
+rotate:90
+CobCannon_cob.png
+bounds:8,1650,810,390
+CobCannon_fuse.png
+bounds:884,1487,155,165
+CobCannon_husk1.png
+bounds:8,1232,745,410
+CobCannon_husk2.png
+bounds:826,1660,755,380
+CobCannon_husk3.2.png
+bounds:1589,1555,485,330
+rotate:90
+CobCannon_husk3.png
+bounds:221,281,485,330
+CobCannon_husk4.2.png
+bounds:8,8,465,265
+CobCannon_husk4.png
+bounds:481,8,465,265
+CobCannon_log.png
+bounds:8,334,890,205
+rotate:90
+Locator
+bounds:1927,2030,10,10
+Tween 1
+bounds:221,619,605,250
+rotate:90
+Tween 3
+bounds:479,649,575,260
+rotate:90

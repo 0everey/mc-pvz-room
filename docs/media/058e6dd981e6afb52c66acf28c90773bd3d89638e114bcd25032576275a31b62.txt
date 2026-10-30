@@ -1,0 +1,10 @@
+Rake.png
+size:512,256
+filter:Linear,Linear
+rake1.png
+bounds:2,2,140,180
+rake2_symbol
+bounds:144,2,140,180
+rake_handle.png
+bounds:2,184,30,415
+rotate:90

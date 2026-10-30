@@ -1,0 +1,16 @@
+Diamond.png
+size:2048,512
+filter:Linear,Linear
+Diamond.png
+bounds:2,82,340,260
+Diamond_shine1.png
+bounds:344,82,340,260
+Diamond_shine2.png
+bounds:686,82,340,260
+Diamond_shine3.png
+bounds:1028,82,340,260
+Diamond_shine4.png
+bounds:1370,82,340,260
+Diamond_shine5.png
+bounds:1712,2,340,260
+rotate:90

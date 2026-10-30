@@ -1,0 +1,12 @@
+SlotMachine.png
+size:1024,512
+filter:Linear,Linear
+Locator
+bounds:2,2,10,10
+SlotMachine_ball
+bounds:784,166,225,225
+SlotMachine_base
+bounds:2,106,285,780
+rotate:90
+SlotMachine_shaft
+bounds:2,14,475,90

@@ -1,0 +1,15 @@
+RipMode_Switch.png
+size:1024,256
+filter:Linear,Linear
+Shadow
+bounds:423,90,114,106
+Slot
+bounds:2,41,155,331
+rotate:90
+Slot_OL
+bounds:2,2,37,296
+rotate:90
+Switch_Ball
+bounds:335,48,86,148
+Switch_Stick
+bounds:539,125,126,71

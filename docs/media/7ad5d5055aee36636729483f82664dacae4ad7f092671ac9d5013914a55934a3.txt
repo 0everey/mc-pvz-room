@@ -1,0 +1,16 @@
+Squash.png
+size:512,512
+filter:Linear,Linear
+Locator
+bounds:8,8,10,10
+Squash_body
+bounds:8,104,345,375
+Squash_eyebrow
+bounds:8,26,150,70
+Squash_eyes
+bounds:489,374,105,15
+rotate:90
+Squash_stem
+bounds:361,409,120,70
+Squash_stem_ol
+bounds:361,331,120,70

@@ -1,0 +1,6 @@
+LawnMoweredZombie.png
+size:1024,512
+filter:Linear,Linear
+zombie
+bounds:2,2,315,620
+rotate:90

@@ -1,0 +1,16 @@
+ZenGarden_bugspray.png
+size:2048,256
+filter:Linear,Linear
+ZenGarden_bugspray_bottle.png
+bounds:2,32,210,350
+rotate:90
+ZenGarden_bugspray_spray1.png
+bounds:354,2,265,240
+ZenGarden_bugspray_spray2.png
+bounds:621,2,265,240
+ZenGarden_bugspray_spray3.png
+bounds:888,2,265,240
+ZenGarden_bugspray_spray4.png
+bounds:1155,2,265,240
+ZenGarden_bugspray_trigger.png
+bounds:1422,132,130,110

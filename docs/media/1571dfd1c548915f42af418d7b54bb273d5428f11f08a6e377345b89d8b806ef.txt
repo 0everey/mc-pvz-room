@@ -1,0 +1,15 @@
+FirePea.png
+size:2048,256
+filter:Linear,Linear
+FirePea
+bounds:1170,42,190,190
+FirePea_flame1
+bounds:2,37,290,195
+FirePea_flame2
+bounds:294,37,290,195
+FirePea_flame3
+bounds:586,37,290,195
+FirePea_flame4
+bounds:878,37,290,195
+FirePea_spark
+bounds:2,2,45,33

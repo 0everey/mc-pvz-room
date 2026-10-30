@@ -1,0 +1,17 @@
+Wallnut.png
+size:1024,1024
+filter:Linear,Linear
+Locator
+bounds:516,182,10,10
+Wallnut
+bounds:8,516,500,500
+Wallnut_blink1
+bounds:516,358,293,150
+Wallnut_blink2
+bounds:516,200,293,150
+Wallnut_cracked1
+bounds:8,8,500,500
+Wallnut_cracked2
+bounds:516,516,500,500
+Wallnut_twitch
+bounds:817,448,135,60

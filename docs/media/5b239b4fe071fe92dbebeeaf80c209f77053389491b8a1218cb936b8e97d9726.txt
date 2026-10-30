@@ -1,0 +1,13 @@
+Dirt_particles.png
+size:256,64
+filter:Linear,Linear
+DirtParticles_01
+bounds:2,2,57,52
+DirtParticles_02
+bounds:113,20,32,34
+DirtParticles_03
+bounds:61,4,50,50
+DirtParticles_04
+bounds:147,23,31,31
+DirtParticles_05
+bounds:180,31,27,23

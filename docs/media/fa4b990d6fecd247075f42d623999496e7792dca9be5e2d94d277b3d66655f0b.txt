@@ -1,0 +1,14 @@
+ZenGarden_phonograph.png
+size:512,256
+filter:Linear,Linear
+ZenGarden_phonograph_base.png
+bounds:204,79,215,175
+ZenGarden_phonograph_needle.png
+bounds:204,2,75,65
+rotate:90
+ZenGarden_phonograph_record.png
+bounds:271,17,115,60
+ZenGarden_phonograph_shaft1.png
+bounds:421,139,80,115
+ZenGarden_phonograph_shaft2.png
+bounds:2,44,200,210
