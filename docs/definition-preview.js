@@ -1,4 +1,4 @@
-import {makeScope,assetText} from './engines/lifecycle.js';
+import {makeScope,assetText,imageElementsReady} from './engines/lifecycle.js';
 import {createPreview} from './preview-engines.js';
 import {createImagePreview} from './frame-player.js';
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
@@ -53,7 +53,7 @@ export async function createDefinitionPreview(host,row,context){
     }
     if(!art.childElementCount)art.remove();
     if(child)scope.own(()=>child.dispose());
-    scope.check();scope.status('ready','定义预览 · 原数据和完整源文件可查');
+    await imageElementsReady(root,scope.signal);scope.check();scope.status('ready','定义预览 · 原数据和完整源文件可查');
     return {get duration(){return child?.duration||0;},get time(){return child?.time||0;},get playing(){return child?.playing||false;},play:()=>child?.play?.()||false,pause:()=>child?.pause?.()??true,seek:t=>child?.seek?.(t)||false,setSpeed:v=>child?.setSpeed?.(v)||false,dispose:()=>scope.dispose(),animations:[],skins:[]};
   }catch(error){scope.dispose();throw error;}
 }

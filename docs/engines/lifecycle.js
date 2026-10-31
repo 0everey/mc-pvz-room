@@ -99,7 +99,7 @@ export function bindDrag(scope, handlers) {
   const previousTouchAction = host.style.touchAction;
   host.style.touchAction = scope.context.detail ? 'none' : 'pan-y';
   const down = event => {
-    if (event.button !== 0 || !scope.active) return;
+    if (event.button !== 0 || !scope.active || pointer) return;
     suppressClick = false;
     pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, distance: 0 };
     host.setPointerCapture?.(event.pointerId);
@@ -135,4 +135,29 @@ export function bindDrag(scope, handlers) {
     host.style.touchAction = previousTouchAction;
     pointer = null;
   });
+}
+
+// DOM semantic previews become ready only after their actual images can draw.
+// The abort listener also covers a decode promise that outlives its old host.
+export function imageElementsReady(root, signal) {
+  return Promise.all([...root.querySelectorAll('img')].map(image => new Promise((resolve, reject) => {
+    let settled = false;
+    const finish = error => {
+      if (settled) return; settled = true;
+      image.removeEventListener('load', loaded); image.removeEventListener('error', failed);
+      signal?.removeEventListener('abort', cancelled);
+      error ? reject(error) : resolve();
+    };
+    const cancelled = () => finish(abortError());
+    const failed = () => finish(new Error('预览图片读取或解码失败，可重试此项。'));
+    const loaded = () => {
+      if (signal?.aborted) return cancelled();
+      if (!image.naturalWidth) return failed();
+      if (typeof image.decode === 'function') image.decode().then(() => signal?.aborted ? cancelled() : finish(), failed);
+      else finish();
+    };
+    image.addEventListener('load', loaded, {once:true}); image.addEventListener('error', failed, {once:true});
+    signal?.addEventListener('abort', cancelled, {once:true});
+    if (signal?.aborted) cancelled(); else if (image.complete) loaded();
+  })));
 }

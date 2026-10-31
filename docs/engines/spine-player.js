@@ -226,7 +226,8 @@ export async function createSpinePreview(scope, row) {
     const height = Math.max(core.bounds.height, core.bounds.width / aspect) * 1.12 / zoom;
     return { width: height * aspect, height };
   };
-  bindDrag(scope, { drag(dx,dy,rect) { const view = fit(rect); panX -= dx / rect.width * view.width; panY += dy / rect.height * view.height; stage.invalidate(); }, zoom(factor) { zoom = Math.max(.2, Math.min(8, zoom * factor)); stage.invalidate(); } });
+  const zoomBy = factor => { if (!Number.isFinite(factor) || factor <= 0) return false; zoom = Math.max(.2, Math.min(8, zoom * factor)); stage.invalidate(); return true; };
+  bindDrag(scope, { drag(dx,dy,rect) { const view = fit(rect); panX -= dx / rect.width * view.width; panY += dy / rect.height * view.height; stage.invalidate(); }, zoom: zoomBy });
   scope.own(() => core.dispose());
   registerView(scope, stage, {
     continuous: () => core.playing,
@@ -255,6 +256,6 @@ export async function createSpinePreview(scope, row) {
     setAnimation(name) { const result = core.setAnimation(name); if (result) { resetView(); reportSelection(); } return result; },
     setSkin(name) { const result = core.setSkin(name); if (result) { resetView(); reportSelection(); } return result; },
     setSkinGroup(id,value) { const result = core.setSkinGroup(id,value); if (result) { resetView(); reportSelection(); } return result; },
-    resetView,
+    resetView, zoomBy,
   };
 }

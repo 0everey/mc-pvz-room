@@ -25,7 +25,8 @@ export async function createPreview(host, row, context) {
   return {
     play: call('play'), pause: call('pause'), seek: call('seek'), setSpeed: call('setSpeed'),
     setAnimation: call('setAnimation'), setSkin: call('setSkin'), resetView: call('resetView'),
-    setSkinGroup: call('setSkinGroup'),
+    setSkinGroup: call('setSkinGroup'), zoomBy: call('zoomBy'),
+    get canZoom() { return scope.active && typeof engine.zoomBy === 'function'; },
     dispose: () => scope.dispose(),
     get time() { return engine.time || 0; }, get duration() { return engine.duration || 0; },
     get playing() { return scope.active && !!engine.playing; },

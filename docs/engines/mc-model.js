@@ -181,7 +181,8 @@ export async function createMCPreview(scope, row) {
   const projected=new THREE.Box3(),projectedPoint=new THREE.Vector3(),extent=new THREE.Vector3();
   let yaw = generated ? 0 : Math.PI / 4, pitch = generated ? 0 : .5, zoom = 1;
   const resetView = () => { yaw = generated ? 0 : Math.PI / 4; pitch = generated ? 0 : .5; zoom = 1; stage.invalidate(); return true; };
-  bindDrag(scope, { drag(dx,dy) { yaw += dx * .01; pitch = Math.max(-1.45, Math.min(1.45, pitch + dy * .01)); stage.invalidate(); }, zoom(factor) { zoom = Math.max(.2, Math.min(8, zoom * factor)); stage.invalidate(); } });
+  const zoomBy = factor => { if (!Number.isFinite(factor) || factor <= 0) return false; zoom = Math.max(.2, Math.min(8, zoom * factor)); stage.invalidate(); return true; };
+  bindDrag(scope, { drag(dx,dy) { yaw += dx * .01; pitch = Math.max(-1.45, Math.min(1.45, pitch + dy * .01)); stage.invalidate(); }, zoom: zoomBy });
   registerView(scope, stage, {
     draw(shared, { rect }) {
       const aspect = rect.width / rect.height, diameter = size.length();
@@ -196,5 +197,5 @@ export async function createMCPreview(scope, row) {
   });
   const note = [generated ? `${layers.length} 层真实物品贴图` : `${model.elements.length} 个模型元素`, strips ? '动画贴图显示首帧' : '', tinted ? '贴图原色，未指定生物群系染色' : ''].filter(Boolean).join('；');
   scope.status('ready', note);
-  return { animations: [], skins: [], time: 0, duration: 0, playing: false, play: () => false, pause: () => true, seek: () => false, setSpeed: () => false, resetView };
+  return { animations: [], skins: [], time: 0, duration: 0, playing: false, play: () => false, pause: () => true, seek: () => false, setSpeed: () => false, resetView, zoomBy };
 }

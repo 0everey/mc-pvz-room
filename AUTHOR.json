@@ -1,7 +1,7 @@
 {
   "authorRepository": "https://github.com/0everey/mc-pvz-workbench",
-  "authorCommit": "0c09dd0158f999e145d9b4830e05a80e3d227ed3",
-  "releaseSha256": "bb668498eb5d8c0458c646e6dbb4dfc6e37089c2fe290e24b20fdbe8894b61f7",
+  "authorCommit": "4918279486b53ea49674c017ef858f4c987daf52",
+  "releaseSha256": "6a77f4fc605030af64a8a95ccebf5b21976a8ba42cecf3d3d83ad0a50a6e442c",
   "catalogRevision": "d1e1120ed00512d3d839827d5c19724404aba7b79a946710eb91382373b92f05",
   "entry": "https://0everey.github.io/mc-pvz-room/",
   "projection": "static shell, public catalog and registered content-addressed media; private source roots and config excluded"
