@@ -26,7 +26,7 @@ function context(signal,detail,onStatus){return{url,models:catalog.models,textur
 const previewAttempts=new WeakMap();
 function pageReadiness(){
  const hosts=[...document.querySelectorAll('#grid > .resource-card > .preview')],total=hosts.length;
- if(!total)return;
+ if(!total){hint('当前范围没有匹配资源');return;}
  const pending=hosts.filter(h=>!['ready','empty','unsupported','error'].includes(h.dataset.phase)).length,failed=hosts.filter(h=>h.dataset.phase==='error').length,limited=hosts.filter(h=>['empty','unsupported'].includes(h.dataset.phase)).length;
  hint(pending?`准备预览 ${total-pending}/${total}`:failed?`${failed} 项未就绪 · 可单独重试`:limited?`本页已就绪 · ${limited} 项有说明`:'本页展示已就绪');
 }
