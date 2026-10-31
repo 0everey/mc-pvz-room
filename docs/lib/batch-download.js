@@ -1,3 +1,4 @@
+import {HANDOFF_FILE,validateHandoff,handoffText,publicManifest as manifestRecord} from '../export-handoff.js';
 import { safeArchivePath, checkArchiveNames } from './library-state.js';
 
 const ZIP32=0xffffffff, BLOB_LIMIT=512*1024*1024, CHUNK=256*1024;
@@ -16,10 +17,10 @@ function validatePlan(plan){
   const ids=new Set(),paths=new Set();let total=0;
   for(const file of plan.files){safeArchivePath(file.path);const fold=file.path.toLowerCase();if(paths.has(fold)||fold==='batch-manifest.json'||typeof file.id!=='string'||ids.has(file.id)||!Number.isSafeInteger(file.bytes)||file.bytes<0||!/^[0-9a-f]{64}$/i.test(file.sha256)||typeof file.url!=='string')throw Error('批量计划文件无效或冲突');ids.add(file.id);paths.add(fold);total+=file.bytes;}
   const itemIds=new Set();for(const item of plan.items){if(typeof item.id!=='string'||itemIds.has(item.id)||typeof item.fingerprint!=='string'||!Array.isArray(item.files)||!item.files.length||item.files.some(id=>!ids.has(id)))throw Error('批量计划 item 映射无效');itemIds.add(item.id);}
-  if(!Number.isSafeInteger(total)||total!==plan.totalBytes)throw Error('批量计划字节量不符');checkArchiveNames([...plan.files.map(file=>file.path),'BATCH-MANIFEST.json']);return plan;
+  if(!Number.isSafeInteger(total)||total!==plan.totalBytes)throw Error('批量计划字节量不符');validateHandoff(plan.handoff);checkArchiveNames([...plan.files.map(file=>file.path),'BATCH-MANIFEST.json',...(plan.handoff?[HANDOFF_FILE]:[])]);return plan;
 }
-function planSignature(plan){validatePlan(plan);return JSON.stringify({libraryId:plan.libraryId,revision:plan.revision,itemCount:plan.itemCount,fileCount:plan.fileCount,totalBytes:plan.totalBytes,items:[...plan.items].sort((a,b)=>a.id.localeCompare(b.id)).map(i=>({id:i.id,fingerprint:i.fingerprint,files:[...i.files].sort()})),files:[...plan.files].sort((a,b)=>a.id.localeCompare(b.id)).map(f=>({id:f.id,path:f.path,bytes:f.bytes,sha256:f.sha256.toLowerCase()}))});}
-function publicManifest(plan){return JSON.stringify({schema:plan.schema,libraryId:plan.libraryId,revision:plan.revision,itemCount:plan.itemCount,fileCount:plan.fileCount,totalBytes:plan.totalBytes,items:plan.items.map(i=>({id:i.id,name:i.name,fingerprint:i.fingerprint,files:[...i.files]})),files:plan.files.map(f=>({id:f.id,path:f.path,name:f.name,bytes:f.bytes,sha256:f.sha256}))},null,2)+'\n';}
+function planSignature(plan){validatePlan(plan);return JSON.stringify({libraryId:plan.libraryId,revision:plan.revision,itemCount:plan.itemCount,fileCount:plan.fileCount,totalBytes:plan.totalBytes,items:[...plan.items].sort((a,b)=>a.id.localeCompare(b.id)).map(i=>({id:i.id,fingerprint:i.fingerprint,files:[...i.files].sort()})),handoff:validateHandoff(plan.handoff)||null,files:[...plan.files].sort((a,b)=>a.id.localeCompare(b.id)).map(f=>({id:f.id,path:f.path,bytes:f.bytes,sha256:f.sha256.toLowerCase()}))});}
+function publicManifest(plan){return JSON.stringify(manifestRecord(plan),null,2)+'\n';}
 
 const CRC_TABLE=new Uint32Array(256);
 for(let n=0;n<256;n++){let c=n;for(let bit=0;bit<8;bit++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;CRC_TABLE[n]=c>>>0;}
@@ -58,7 +59,7 @@ function nativeClick(url,name){const anchor=document.createElement('a');anchor.h
 async function localBatch(plan,{baseURL,signal,onProgress,saveName}){
   let prepared=null,cancelledOnce=false;
   const cancel=async()=>{if(!prepared?.cancelUrl||cancelledOnce)return;cancelledOnce=true;try{await fetch(absoluteURL(prepared.cancelUrl,baseURL),{method:'POST',cache:'no-store',keepalive:true});}catch{/* task owner is cancelled even if transport failed */}};
-  const responsePromise=fetch(absoluteURL('api/batches/prepare',baseURL),{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify({revision:plan.revision,itemIds:plan.items.map(item=>item.id)})}).then(async response=>{const body=await response.json();if(!response.ok)throw Error(body.error||`批量准备失败：HTTP ${response.status}`);prepared=body;if(signal?.aborted)await cancel();return body;});
+  const responsePromise=fetch(absoluteURL('api/batches/prepare',baseURL),{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify({revision:plan.revision,itemIds:plan.items.map(item=>item.id),...(plan.handoff?{handoff:validateHandoff(plan.handoff)}:{})})}).then(async response=>{const body=await response.json();if(!response.ok)throw Error(body.error||`批量准备失败：HTTP ${response.status}`);prepared=body;if(signal?.aborted)await cancel();return body;});
   const onAbort=()=>{void cancel();};signal?.addEventListener('abort',onAbort,{once:true});
   try{
     progress(onProgress,'preparing',0,plan.fileCount,0,plan.totalBytes);await abortable(responsePromise,signal);check(signal);
@@ -89,9 +90,10 @@ export async function downloadBatch(plan,{mode='static',baseURL=globalThis.docum
   validatePlan(plan);check(signal);if(!baseURL)throw Error('缺少下载 baseURL');if(!['static','local'].includes(mode))throw Error('未知批量下载 mode');
   if(mode==='local')return localBatch(plan,{baseURL,signal,onProgress,saveName});
   const manifest=encoder.encode(publicManifest(plan));
+  const metadata=[{name:'BATCH-MANIFEST.json',bytes:manifest},...(plan.handoff?[{name:HANDOFF_FILE,bytes:encoder.encode(handoffText(plan))}]:[])];
   const canFSA=preferFileSystem&&typeof globalThis.showSaveFilePicker==='function';
   if(!canFSA&&plan.totalBytes>BLOB_LIMIT)throw Error('兼容下载最多 512MiB 原件；请使用支持流式保存的浏览器或本机服务');
-  if(plan.fileCount+1>65535||plan.totalBytes+manifest.length+plan.files.reduce((n,f)=>n+76+encoder.encode(f.path).length*2,0)+76+encoder.encode('BATCH-MANIFEST.json').length*2+22+(canFSA?16*(plan.fileCount+1):0)>ZIP32)throw Error('所选集合超出 ZIP32 容量');
+  if(plan.fileCount+metadata.length>65535||plan.totalBytes+metadata.reduce((n,f)=>n+f.bytes.length+76+encoder.encode(f.name).length*2,0)+plan.files.reduce((n,f)=>n+76+encoder.encode(f.path).length*2,0)+22+(canFSA?16*(plan.fileCount+metadata.length):0)>ZIP32)throw Error('所选集合超出 ZIP32 容量');
   let picker;
   if(canFSA){try{picker=Promise.resolve(globalThis.showSaveFilePicker({suggestedName:saveName,types:[{description:'ZIP 归档',accept:{'application/zip':['.zip']}}]}));}catch(error){if(error.name==='AbortError')throw cancelled();throw error;}}
   let writable=null,finished=false,activeBytes=0;const parts=[];let completedFiles=0,completedBytes=0;
@@ -99,7 +101,7 @@ export async function downloadBatch(plan,{mode='static',baseURL=globalThis.docum
   try{
     if(canFSA){const handle=await abortable(picker,signal);check(signal);const pending=handle.createWritable();pending.then(stream=>{if(signal?.aborted)void stream.abort().catch(()=>{});},()=>{});writable=await abortable(pending,signal);}
     check(signal);report('preparing');
-    const entries=plan.files.map(file=>({name:file.path,size:file.bytes,load:()=>readVerified(file,baseURL,signal,read=>report('reading',read)).then(bytes=>{activeBytes=bytes.length;return bytes;})}));entries.push({name:'BATCH-MANIFEST.json',size:manifest.length,load:async()=>manifest});
+    const entries=plan.files.map(file=>({name:file.path,size:file.bytes,load:()=>readVerified(file,baseURL,signal,read=>report('reading',read)).then(bytes=>{activeBytes=bytes.length;return bytes;})}));for(const file of metadata)entries.push({name:file.name,size:file.bytes.length,load:async()=>file.bytes});
     const sink=canFSA?async bytes=>{check(signal);await abortable(writable.write(bytes),signal);}:async bytes=>{parts.push(bytes);};
     await zipToSink(entries,sink,{signal,stream:canFSA,onProgress:event=>{
       if(event.phase==='crc')report('crc',activeBytes);

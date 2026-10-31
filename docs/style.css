@@ -120,3 +120,22 @@ body[data-game=MC] .tool-popover button,body[data-game=PVZ] .tool-popover button
  .pager>div{grid-column:2;grid-row:1}.pager #pageRange{grid-column:1;grid-row:1}
  .detail-panel .preview-toolbar{gap:4px}.preview-toolbar .tiny{font-size:12px;flex-basis:100%}
 }
+
+/* R9: the category action shares the existing path row; handoff stays on demand. */
+.scope-download{min-height:40px;flex:0 0 auto;white-space:nowrap;padding:6px 10px;font-size:13px}
+#exportDialog{width:min(640px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;padding:20px;border:1px solid #789fa9;border-radius:16px;background:#1c343f;color:var(--ink)}
+#exportDialog::backdrop{background:#031219c9;backdrop-filter:blur(3px)}
+#exportDialog .dialog-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}#exportDialog h2{font-size:20px;margin:0}
+#exportDialog button{min-height:44px;font-size:14px}#closeExport{width:44px;flex-shrink:0;font-size:24px!important;padding:0}
+#exportRanges{border:0;padding:0;margin:0 0 12px;display:grid;gap:4px}#exportRanges legend{font-size:12px;color:var(--muted);margin-bottom:6px}
+#exportRanges label{min-height:44px;display:flex;align-items:center;gap:10px;font-size:15px}#exportRanges input{width:20px;height:20px;accent-color:var(--accent)}
+.export-path{font-size:15px;line-height:1.6;overflow-wrap:anywhere;margin:4px 0 8px}#exportSummary{font-size:15px;font-weight:700;margin-bottom:8px}#exportHint{font-size:13px;line-height:1.6}
+.export-main{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}#exportDownload{flex:1;min-width:160px}.export-extra-actions{display:flex;gap:8px;flex-wrap:wrap}
+#exportProgress,#exportActionStatus{font-size:13px;line-height:1.6;overflow-wrap:anywhere;margin:10px 0;min-height:20px}#exportExtras{border-top:1px solid var(--line);padding-top:4px;margin-top:12px}#exportExtras summary{min-height:44px;cursor:pointer;padding:10px 0}
+#exportShareHint{font-size:12px;line-height:1.6;margin-top:8px}#exportCopyFallback{width:100%;height:180px;resize:vertical;background:#10252e;color:var(--ink);font-size:16px;border:1px solid var(--line);padding:8px}
+@media(max-width:900px){.scope-download{font-size:12px;padding:6px 8px}.path-bar #currentGroupCount{display:none}#exportDialog{padding:16px}#exportDialog h2{font-size:18px}}
+
+.path-bar>#openExport{width:auto;min-width:96px;min-height:40px;padding:6px 9px;font-size:13px;flex:0 0 auto}
+@media(max-width:900px){.path-bar>#openExport{min-width:90px;font-size:12px;padding:6px 7px}}
+
+#exportProgress:empty,#exportActionStatus:empty{display:none}
