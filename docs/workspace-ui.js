@@ -62,7 +62,7 @@ export class WorkspaceUI{
   for(const control of document.querySelectorAll('[name=exportScope]'))control.disabled=Boolean(this.task);
  }
  async copyExport(link){
-  const plan=this.exportPlan;if(!plan)return;const ticket=this.exportGeneration;
+  const plan=this.exportPlan;if(!plan&&!link)return;const ticket=this.exportGeneration;
   const address=new URL(document.baseURI),canonical=new URL(PUBLIC_SITE),publicBase=address.origin===canonical.origin&&address.pathname.startsWith(canonical.pathname)?document.baseURI:'';
   const text=link?this.exportLink:usageListing(plan,publicBase);if(!text)return;
   try{await navigator.clipboard.writeText(text);if(ticket===this.exportGeneration&&$('exportDialog').open)$('exportActionStatus').textContent=link?'分类链接已复制。':'完整使用清单已复制，可交给收件人或AI。';}
