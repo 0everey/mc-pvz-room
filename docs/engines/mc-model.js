@@ -1,6 +1,7 @@
 import * as THREE from '../vendor/three.module.min.js';
 import { assetText, assetImage, bindDrag, UnsupportedPreview } from './lifecycle.js';
 import { useStage, registerView } from './shared-stage.js';
+import { visibleImageBounds } from '../preview-fit.js';
 
 const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
 const radians = value => value * Math.PI / 180;
@@ -162,20 +163,35 @@ export async function createMCPreview(scope, row) {
     }
   }
   const bounds = new THREE.Box3().setFromObject(object), size = new THREE.Vector3(), center = new THREE.Vector3();
+  if(generated){
+    const visible=new THREE.Box3();
+    for(const image of images.values()){
+      const b=visibleImageBounds(image,[[0,0,image.naturalWidth,image.naturalHeight]],12);
+      if(b.empty)continue;
+      visible.expandByPoint(new THREE.Vector3(b.x/image.naturalWidth*16,16-(b.y+b.height)/image.naturalHeight*16,8));
+      visible.expandByPoint(new THREE.Vector3((b.x+b.width)/image.naturalWidth*16,16-b.y/image.naturalHeight*16,8+(layers.length-1)*.015));
+    }
+    if(visible.isEmpty())throw new UnsupportedPreview('此物品图层没有可见像素');
+    bounds.copy(visible);
+  }
   bounds.getSize(size); bounds.getCenter(center);
   if (!Number.isFinite(size.length()) || size.length() <= 0) throw new UnsupportedPreview('模型没有有限可见几何');
   const camera = new THREE.OrthographicCamera(-1,1,1,-1,.01,10000);
+  const corners=[];for(const x of [bounds.min.x,bounds.max.x])for(const y of [bounds.min.y,bounds.max.y])for(const z of [bounds.min.z,bounds.max.z])corners.push(new THREE.Vector3(x,y,z));
+  const projected=new THREE.Box3(),projectedPoint=new THREE.Vector3(),extent=new THREE.Vector3();
   let yaw = generated ? 0 : Math.PI / 4, pitch = generated ? 0 : .5, zoom = 1;
   const resetView = () => { yaw = generated ? 0 : Math.PI / 4; pitch = generated ? 0 : .5; zoom = 1; stage.invalidate(); return true; };
   bindDrag(scope, { drag(dx,dy) { yaw += dx * .01; pitch = Math.max(-1.45, Math.min(1.45, pitch + dy * .01)); stage.invalidate(); }, zoom(factor) { zoom = Math.max(.2, Math.min(8, zoom * factor)); stage.invalidate(); } });
   registerView(scope, stage, {
     draw(shared, { rect }) {
-      const aspect = rect.width / rect.height, diameter = size.length() * 1.12;
-      const halfHeight = diameter / 2 / zoom * Math.max(1, 1 / aspect);
-      camera.left = -halfHeight * aspect; camera.right = halfHeight * aspect; camera.top = halfHeight; camera.bottom = -halfHeight;
+      const aspect = rect.width / rect.height, diameter = size.length();
       const distance = Math.max(100, diameter * 3);
       camera.position.set(center.x + Math.sin(yaw) * Math.cos(pitch) * distance, center.y + Math.sin(pitch) * distance, center.z + Math.cos(yaw) * Math.cos(pitch) * distance);
-      camera.lookAt(center); camera.updateProjectionMatrix(); shared.renderer.render(scene, camera);
+      camera.lookAt(center);camera.updateMatrixWorld(true);
+      projected.makeEmpty();for(const point of corners)projected.expandByPoint(projectedPoint.copy(point).applyMatrix4(camera.matrixWorldInverse));
+      projected.getSize(extent);const halfHeight=Math.max(extent.y,extent.x/aspect,.001)/2/.92/zoom;
+      camera.left=-halfHeight*aspect;camera.right=halfHeight*aspect;camera.top=halfHeight;camera.bottom=-halfHeight;
+      camera.updateProjectionMatrix(); shared.renderer.render(scene, camera);
     },
   });
   const note = [generated ? `${layers.length} 层真实物品贴图` : `${model.elements.length} 个模型元素`, strips ? '动画贴图显示首帧' : '', tinted ? '贴图原色，未指定生物群系染色' : ''].filter(Boolean).join('；');

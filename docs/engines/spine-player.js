@@ -223,7 +223,7 @@ export async function createSpinePreview(scope, row) {
   const resetView = () => { panX = panY = 0; zoom = 1; stage.invalidate(); return true; };
   const fit = rect => {
     const aspect = rect.width / Math.max(1, rect.height);
-    const height = Math.max(core.bounds.height, core.bounds.width / aspect) * 1.18 / zoom;
+    const height = Math.max(core.bounds.height, core.bounds.width / aspect) * 1.12 / zoom;
     return { width: height * aspect, height };
   };
   bindDrag(scope, { drag(dx,dy,rect) { const view = fit(rect); panX -= dx / rect.width * view.width; panY += dy / rect.height * view.height; stage.invalidate(); }, zoom(factor) { zoom = Math.max(.2, Math.min(8, zoom * factor)); stage.invalidate(); } });
