@@ -25,7 +25,7 @@ function freeze(value) {
 }
 
 export class Hierarchy {
-  #nodes = new Map(); #members = new Map();
+  #nodes = new Map(); #members = new Map(); #aliases = new Map();
   constructor(catalog) {
     const items = itemIndex(catalog), hierarchy = catalog.hierarchy;
     if (!record(hierarchy?.nodes) || !record(hierarchy.roots)) fail('hierarchy.nodes/roots 缺失');
@@ -58,10 +58,15 @@ export class Hierarchy {
       this.#members.set(id,members); return members;
     };
     for (const id of this.#nodes.keys()) collect(id);
+    for (const [from,to] of Object.entries(hierarchy.aliases || {})) {
+      if (this.#nodes.has(from) || !this.#nodes.has(to) || !from.startsWith('semantic:') || !to.startsWith('semantic:')) fail('合并分组别名无效');
+      this.#aliases.set(from,to);
+    }
   }
-  node(id) { return this.#nodes.get(id) || null; }
+  resolve(id) { return this.#aliases.get(id) || id; }
+  node(id) { return this.#nodes.get(this.resolve(id)) || null; }
   children(id) { const node=this.node(id); if (!node) fail(`未知分组：${id}`); return node.children.map(id=>this.#nodes.get(id)); }
-  members(id) { if (!this.#members.has(id)) fail(`未知分组：${id}`); return new Set(this.#members.get(id)); }
+  members(id) { id=this.resolve(id); if (!this.#members.has(id)) fail(`未知分组：${id}`); return new Set(this.#members.get(id)); }
   breadcrumbs(id) { const path=[]; for (let node=this.node(id); node; node=node.parentId===null?null:this.node(node.parentId)) path.unshift(node); if (!path.length) fail(`未知分组：${id}`); return path; }
 }
 
