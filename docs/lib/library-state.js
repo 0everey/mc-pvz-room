@@ -187,7 +187,7 @@ export function batchPlan(catalog,ids) {
   const items=itemIndex(catalog);text(catalog.revision,'revision');if(!record(catalog.assets))fail('catalog.assets 缺失');
   const selected=[...uniqueStrings([...ids],'选中 item IDs')];if(!selected.length)fail('请先选择资源');
   const outputItems=[],files=[],byId=new Map(),byPath=new Map(),spelling=new Map([['batch-manifest.json','BATCH-MANIFEST.json']]);let totalBytes=0;
-  for(const id of selected){const item=items.get(id);if(!item)fail(`选中项已不存在：${id}`);text(item.name,'item.name');text(item.downloadFingerprint,'downloadFingerprint');
+  for(const id of selected){const item=items.get(id);if(!item)fail(`选中项已不存在：${id}`);const displayName=item.displayName||item.name;text(displayName,'item.displayName');text(item.downloadFingerprint,'downloadFingerprint');
     if(item.dependencyErrors!==undefined&&(!Array.isArray(item.dependencyErrors)||item.dependencyErrors.length))fail(`资源依赖异常：${id}`);
     const dependencies=[...uniqueStrings(item.files,`${id}.files`)];if(!dependencies.length)fail(`资源没有完整原件 files：${id}`);
     const mapped=[];
@@ -204,7 +204,7 @@ export function batchPlan(catalog,ids) {
       else{const file={id:assetId,path,url:asset.url,bytes:asset.bytes,sha256:asset.sha256.toLowerCase(),name:asset.name};files.push(file);byPath.set(path,file);canonical=assetId;totalBytes+=asset.bytes;if(!Number.isSafeInteger(totalBytes))fail('原件总量超过安全整数范围');}
       byId.set(assetId,canonical);mapped.push(canonical);
     }
-    outputItems.push({id,name:item.name,fingerprint:item.downloadFingerprint,files:[...new Set(mapped)]});
+    outputItems.push({id,name:displayName,fingerprint:item.downloadFingerprint,files:[...new Set(mapped)]});
   }
   checkArchiveNames([...files.map(file=>file.path),'BATCH-MANIFEST.json']);
   return freeze({schema:'resource-batch.v1',libraryId:catalog.libraryId,revision:catalog.revision,items:outputItems,files,totalBytes,itemCount:outputItems.length,fileCount:files.length});
