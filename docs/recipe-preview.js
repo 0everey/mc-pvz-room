@@ -31,7 +31,7 @@ export function recipePreview(row,context){
     for(let i=0;i<9;i++)inputs.append(slot(grid?.[i]));
   }else if(r.type.startsWith('smithing_')){
     inputs.classList.add('recipe-smithing');
-    ['模板','基底','添加物'].forEach((role,i)=>{const part=node('div','recipe-part');part.append(slot(r.ingredients[i],role),node('span','recipe-role',role));inputs.append(part);});
+    ['模板','基底','添加物'].forEach((role,i)=>{const part=node('div','recipe-part');part.append(slot(r.ingredients[i],role),node('span','recipe-role',!detail&&role==='添加物'?'添加':role));inputs.append(part);});
   }else if(r.ingredients.length){
     inputs.append(slot(r.ingredients[0],'材料'));
   }else{

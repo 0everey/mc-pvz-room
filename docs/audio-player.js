@@ -44,6 +44,8 @@ export function createAudioPlayer(host, {src, label, signal}) {
   const controller = {
     mediaKind: 'audio',
     get playing() { return !disposed && !audio.paused; },
+    get time() { return disposed ? 0 : audio.currentTime || 0; },
+    seek(value) { if (disposed || !Number.isFinite(value)) return false; try { audio.currentTime = Math.max(0, value); update(); return true; } catch { return false; } },
     toggle() { return audio.paused ? controller.play() : controller.pause(); },
     async play() {
       if (disposed || signal.aborted) return false;
